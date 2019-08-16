@@ -2,9 +2,9 @@
 
 // start quiz on page load
 // handle submit button to start quiz
+let questionNum = 0;
 function startQuiz() {
-  let questionNum = 0;
-
+  
   $('.js-start-quiz').on('click', event => {
     console.log('button press');
     generateQuestion(event, questionNum);
@@ -12,7 +12,7 @@ function startQuiz() {
 }
 
 // track progress
-function quizProgress() {
+function quizProgress(questionNum) {
   questionNum++;
 }
 
@@ -26,20 +26,20 @@ function generateQuestion(event, num) {
   const questionHTML = `
   <section>
     <h2>${STORE[num].question}</h2>
-    <form>
+    <form id='js-form'>
         <label for='answer1'>
-            <input name='answerGroup' id='answer1' type="radio">${STORE[num].answers[0]}</input>
+            <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE[num].answers[0]}</input>
         </label>
         <label for='answer2'>
-            <input name='answerGroup' id='answer2' type="radio">${STORE[num].answers[1]}</input>
+            <input name='answerGroup' id='answer2' type="radio" value = "1">${STORE[num].answers[1]}</input>
         </label>
         <label for='answer3'>
-            <input name='answerGroup' id='answer3' type="radio">${STORE[num].answers[2]}</input>
+            <input name='answerGroup' id='answer3' type="radio" value = "2">${STORE[num].answers[2]}</input>
         </label>
         <label for='answer4'>
-            <input name='answerGroup' id='answer4' type="radio">${STORE[num].answers[3]}</input>
+            <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[num].answers[3]}</input>
         </label>
-        <button>Submit</button>
+        <input type = "submit" class="js-submitButton"></input>
     </form>
   </section>`;
   
@@ -52,8 +52,16 @@ function generateQuestion(event, num) {
 
 // record user answer 
 function handleAnswerSubmission() {
+  $('body').on('submit','#js-form', function(event) {
+    event.preventDefault();
+    const userAnswer = $('input:checked').val();
+    if (userAnswer==STORE[questionNum].correctAnswer) {
+      answerFeedback('correct');
+    }
+    answerFeedback('wrong');
+  });
 
-  quizProgress();
+  quizProgress(questionNum);
 
 }
 
@@ -75,7 +83,11 @@ function answerFeedback() {
 function displayFinal() {
 
 }
+function main() {
+  console.log('loaded');
+  startQuiz();
+  handleAnswerSubmission();
+}
 
+$(main);
 
-
-$(startQuiz);
