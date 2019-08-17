@@ -31,6 +31,7 @@ function generateQuestion(event, num) {
   const questionHTML = `
     <h2>${STORE[num].question}</h2>
     <form id='js-form'>
+      <fieldset>
         <label for='answer1'>
             <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE[num].answers[0]}</input>
         </label>
@@ -44,6 +45,7 @@ function generateQuestion(event, num) {
             <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[num].answers[3]}</input>
         </label>
         <input type = "submit" class="js-submitButton"></input>
+      </fieldset>
     </form>`;
   
   $('.js-output').html(questionHTML);
@@ -91,18 +93,15 @@ function wrongAnswer() {
 function nextQuestion() {
   console.log('next question');
   $('.js-next-question').click(e => {
-    quizProgress();
-    generateQuestion(e, questionNum);
+    if (questionNum < STORE.length-1) {
+      quizProgress();
+      generateQuestion(e, questionNum);
+    }
+    else {
+      displayFinal();
+    }
   });
 
-
-}
-
-
-// tell user if answer is right or wrong
-// give correct answer if wrong
-// also handle next question button
-function answerFeedback() {
 
 }
 
@@ -111,7 +110,13 @@ function answerFeedback() {
 // how many questions right/wrong
 // start new quiz from here
 function displayFinal() {
-
+  $('.js-output').html(`
+  <p>Your score is: ${score}</p>
+  <button class='js-restart'>Start over</button>
+  `);
+  $('.js-restart').on('click', function(){
+    location.reload();
+  })
 }
 function main() {
   console.log('loaded');
