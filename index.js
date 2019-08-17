@@ -44,7 +44,7 @@ function generateQuestion(event, num) {
         <label for='answer4'>
             <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[num].answers[3]}</input>
         </label>
-        <input type = "submit" class="js-submitButton"></input>
+        <input type = "submit" class="js-submitButton" value='Submit'></input>
       </fieldset>
     </form>`;
   
