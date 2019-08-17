@@ -1,30 +1,34 @@
 'use strict';
 
+
+// global variables
+let questionNum = 0;
+let score = 0;
+
 // start quiz on page load
 // handle submit button to start quiz
-let questionNum = 0;
 function startQuiz() {
-  
   $('.js-start-quiz').on('click', event => {
-    console.log('button press');
     generateQuestion(event, questionNum);
+    $('.js-question-number').text(1);
   });
 }
 
 // track progress
-function quizProgress(questionNum) {
-  questionNum++;
+function quizProgress() {
+  $('.js-question-number').text(++questionNum + 1);
 }
 
 // record score
 function tallyScore() {
-
+  $('.js-score').text(++score);
 }
 
 // generate html for the questions and answers
 function generateQuestion(event, num) {
+
+  // event.currentTarget is the submit button (start quiz) on home page
   const questionHTML = `
-  <section>
     <h2>${STORE[num].question}</h2>
     <form id='js-form'>
         <label for='answer1'>
@@ -40,33 +44,59 @@ function generateQuestion(event, num) {
             <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[num].answers[3]}</input>
         </label>
         <input type = "submit" class="js-submitButton"></input>
-    </form>
-  </section>`;
+    </form>`;
   
-  $(event.currentTarget).parent().html(questionHTML);
-  $(event.currentTarget).remove();
-  
+  $('.js-output').html(questionHTML);
+  $(event.currentTarget).remove(); 
 }
-
-
 
 // record user answer 
 function handleAnswerSubmission() {
   $('body').on('submit','#js-form', function(event) {
     event.preventDefault();
     const userAnswer = $('input:checked').val();
+
     if (userAnswer==STORE[questionNum].correctAnswer) {
-      answerFeedback('correct');
+      tallyScore();
+      correctAnswer();
+    } else {
+      wrongAnswer();
     }
-    answerFeedback('wrong');
   });
-
-  quizProgress(questionNum);
-
 }
 
+// print 'you are right'
+// and add 'next question' button
+function correctAnswer() {
+
+  let output= `
+  <p>You are right!</p>
+  <button class='js-next-question'>Next question</button>`;
+  $('.js-output').html(output);
+  nextQuestion();
+}
+
+function wrongAnswer() {
+
+  let correctAnswerIndex = STORE[questionNum].correctAnswer;
+  let answer = STORE[questionNum].answers[correctAnswerIndex];
+  let output= `
+  <p>You are wrong!</p>
+  <p>The correct answer is ${answer}<p>
+  <button class='js-next-question'>Next question</button>`;
+  $('.js-output').html(output);
+  nextQuestion();
+}
+
+function nextQuestion() {
+  console.log('next question');
+  $('.js-next-question').click(e => {
+    quizProgress();
+    generateQuestion(e, questionNum);
+  });
 
 
+}
 
 
 // tell user if answer is right or wrong
