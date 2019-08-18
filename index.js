@@ -44,7 +44,7 @@ function generateQuestion(event, num) {
         <label for='answer4'>
             <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[num].answers[3]}</input>
         </label>
-        <input type = "submit" class="js-submitButton" value='Submit'></input>
+        <input type = "submit" class="js-submitButton button" value='Submit'></input>
       </fieldset>
     </form>`;
   
@@ -72,8 +72,8 @@ function handleAnswerSubmission() {
 function correctAnswer() {
 
   let output= `
-  <p>You are right!</p>
-  <button class='js-next-question'>Next question</button>`;
+  <section class='feedback'><p>You are right!</p></section>
+  <button class='js-next-question button'>Next question</button>`;
   $('.js-output').html(output);
   nextQuestion();
 }
@@ -83,9 +83,9 @@ function wrongAnswer() {
   let correctAnswerIndex = STORE[questionNum].correctAnswer;
   let answer = STORE[questionNum].answers[correctAnswerIndex];
   let output= `
-  <p>You are wrong!</p>
-  <p>The correct answer is ${answer}<p>
-  <button class='js-next-question'>Next question</button>`;
+  <section class='feedback'><p>You are wrong!</p>
+  <p>The correct answer is ${answer}<p></section>
+  <button type='button' class='js-next-question button'>Next question</button>`;
   $('.js-output').html(output);
   nextQuestion();
 }
@@ -112,7 +112,7 @@ function nextQuestion() {
 function displayFinal() {
   $('.js-output').html(`
   <p>Your score is: ${score}</p>
-  <button class='js-restart'>Start over</button>
+  <button class='js-restart button'>Start over</button>
   `);
   $('.js-restart').on('click', function(){
     location.reload();
