@@ -3,13 +3,13 @@
 }
 
 body {
-    background-color: grey;
-    background: url('https://images.ctfassets.net/bxd3o8b291gf/2phT56DSucuUqU6Icm6mCe/b1fd2811691e41ffd1622a07eb528604/HogwartsCastle_WB_F4_HogwartsThroughTheTrees_Illust_100615_Land.jpg?w=1330&q=85')  no-repeat center center fixed;
+    background-color: rgb(1,1,1);
+    background: url('https://images4.alphacoders.com/556/556449.jpg')  no-repeat center center fixed;
     background-size: cover;
     color: white;
     font-family: Saira, Arial, Helvetica, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px 10px 20px 10px;
 }
 
 .stats {
@@ -21,12 +21,15 @@ body {
     /*text-align: center;*/
     margin-left: auto;
     margin-right: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
     font-size: 25px;
 }
 
 h1 {
     font-size: 50px;
     text-align: center;
+    text-shadow: 4px 4px rgb(2,2,2);
 }
 
 h2 {
@@ -34,6 +37,8 @@ h2 {
     background-color: rgb(26, 26, 26, 0.9);
     border: white solid 2px;
     border-radius: 5px;
+    margin: 0 auto;
+    padding: 5px 15px;
 }
 
 main {
@@ -55,11 +60,23 @@ label {
     font-size: 25px;
     border: white solid 2px;
     border-radius: 5px;
-    text-align: justify;
+    text-align: left;
     padding: 10px 15px 10px 15px;
 }
 
+label:hover {
+    background-color:rgb(1,1,1);
+    cursor: pointer;
+}
 
+label:active, label:focus-within {
+    background-color: rgb(240,240,240, 0.9);
+    color: rgb(1,1,1);
+    border: rgb(1,1,1) solid 2px;
+    border-radius: 5px;
+}
+
+/*all buttons*/
 .button {
     background-color: rgb(26, 26, 26, 0.9);
     font-size: 20px;
@@ -67,22 +84,57 @@ label {
     padding: 10px 15px 10px 15px;
     border-radius: 5px;
 }
+
+.button:hover {
+    background-color:rgb(1,1,1);
+    cursor: pointer;
+}
+
+.button:active, .button:focus {
+    background-color: rgb(240,240,240, 0.9);
+    color: rgb(1,1,1);
+    border: rgb(1,1,1) solid 2px;
+    border-radius: 5px;
+}
+
+.alert-no-selection {
+    color: red;
+    font-size: 24px;
+    text-shadow: 2px 2px black;
+}
+
+/*feedback section*/
  .feedback {
-     width: 500px;
+     width: 80%;
      font-size: 25px;
      background-color: rgb(26, 26, 26, 0.9);
      border: white solid 2px;
      border-radius: 5px;
      margin: 10px auto;
+     padding: 5px 15px;
+ }
+
+ .answer-style {
+     font-style: italic;
  }
 
 @media only screen and (min-width: 520px) {
     /* For tablets: */
-
-
+    body {
+        padding: 20px 30px 20px 30px;
+    }
 }
 
 @media only screen and (min-width: 768px) {
-  /* For desktop: */
-
+    /* For desktop: */
+    body {
+        padding: 20px 25% 20px 25%;
+    }
 }
+
+@media only screen and (min-width: 1600px) {
+    /* For ultrawide / high res monitors: */
+    body {
+      padding: 20px 35% 20px 35%;
+      }
+  }
