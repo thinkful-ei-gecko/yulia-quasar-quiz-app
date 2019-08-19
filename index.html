@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <header>
+        <header aria-live="polite">
             <h1>Harry Potter Trivia Quiz</h1>
             <ul class="stats">
                 <li>question: <span class='js-question-number'>0</span></li>
@@ -18,7 +18,7 @@
             </ul>
         </header>
         <main class='layout'>
-            <section class='js-output'></section>
+            <section class='js-output' aria-live="polite"></section>
             <button class='js-start-quiz button'>Start quiz</button>
         </main>
         <footer></footer>

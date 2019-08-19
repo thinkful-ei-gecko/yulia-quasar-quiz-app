@@ -35,9 +35,10 @@ function generateQuestion(event) {
 
   // event.currentTarget is the submit button (start quiz) on home page
   const questionHTML = `
-    <h2>${STORE[questionNum].question}</h2>
-    <form id='js-form'>
+      <form id='js-form'>
+      
       <fieldset>
+      <legend>${STORE[questionNum].question}</legend>
         <label for='answer1'>
             <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE[questionNum].answers[0]}</input>
         </label>
@@ -55,7 +56,7 @@ function generateQuestion(event) {
     </form>`;
   
   $('.js-output').html(questionHTML);
-  $(event.currentTarget).remove(); 
+  $(event.currentTarget).hide(); 
 }
 
 // record user answer 
@@ -172,8 +173,13 @@ function displayFinal() {
 
   // on click 'restart quiz'
   $('.js-restart').on('click', function(){
-
-    location.reload();
+    $('.js-output').children().remove();
+    questionNum=0;
+    score=0;
+    $('.js-score').text(score);
+    $('.js-question-number').text(1);
+    $('.stats').show();
+    generateQuestion();
   })
 }
 
