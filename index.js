@@ -1,10 +1,5 @@
 'use strict';
 
-
-// global variables
-let questionNum = 0;
-let score = 0;
-
 // start quiz on page load
 // handle submit button to start quiz
 function startQuiz() {
@@ -15,19 +10,19 @@ function startQuiz() {
   // click 'start quiz'
   $('.js-start-quiz').on('click', event => {
     $('.stats').show();
-    generateQuestion(event, questionNum);
-    $('.js-question-number').text(1);
+    generateQuestion(event, STORE.questionNum);
+    $('.js-question-number').text(`1 of ${STORE.questions.length}`);
   });
 }
 
 // track progress
 function quizProgress() {
-  $('.js-question-number').text(++questionNum + 1);
+  $('.js-question-number').text(`${++STORE.questionNum + 1} of ${STORE.questions.length}`);
 }
 
 // record score
 function tallyScore() {
-  $('.js-score').text(++score);
+  $('.js-score').text(++STORE.score);
 }
 
 // generate html for the questions and answers
@@ -35,27 +30,28 @@ function generateQuestion(event) {
 
   // event.currentTarget is the submit button (start quiz) on home page
   const questionHTML = `
-    <h2>${STORE[questionNum].question}</h2>
-    <form id='js-form'>
+      <form id='js-form'>
+      
       <fieldset>
+      <legend>${STORE.questions[STORE.questionNum].question}</legend>
         <label for='answer1'>
-            <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE[questionNum].answers[0]}</input>
+            <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE.questions[STORE.questionNum].answers[0]}</input>
         </label>
         <label for='answer2'>
-            <input name='answerGroup' id='answer2' type="radio" value = "1">${STORE[questionNum].answers[1]}</input>
+            <input name='answerGroup' id='answer2' type="radio" value = "1">${STORE.questions[STORE.questionNum].answers[1]}</input>
         </label>
         <label for='answer3'>
-            <input name='answerGroup' id='answer3' type="radio" value = "2">${STORE[questionNum].answers[2]}</input>
+            <input name='answerGroup' id='answer3' type="radio" value = "2">${STORE.questions[STORE.questionNum].answers[2]}</input>
         </label>
         <label for='answer4'>
-            <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE[questionNum].answers[3]}</input>
+            <input name='answerGroup' id='answer4' type="radio" value = "3">${STORE.questions[STORE.questionNum].answers[3]}</input>
         </label>
         <input type = "submit" class="js-submitButton button" value='Submit'></input>
       </fieldset>
     </form>`;
   
   $('.js-output').html(questionHTML);
-  $(event.currentTarget).remove(); 
+  $(event.currentTarget).hide(); 
 }
 
 // record user answer 
@@ -75,7 +71,7 @@ function handleAnswerSubmission() {
     
       const userAnswer = $('input:checked').val();
 
-      if (userAnswer==STORE[questionNum].correctAnswer) {
+      if (userAnswer==STORE.questions[STORE.questionNum].correctAnswer) {
         tallyScore();
         correctAnswer();
       } else {
@@ -92,7 +88,7 @@ function correctAnswer() {
 
   let buttonText = 'Next question';
 
-  if (questionNum === STORE.length - 1) {
+  if (STORE.questionNum === STORE.questions.length - 1) {
     buttonText = 'Finish the quiz';
   }
   let output= `
@@ -105,12 +101,12 @@ function correctAnswer() {
 function wrongAnswer() {
   let buttonText = 'Next question';
 
-  if (questionNum === STORE.length - 1) {
+  if (STORE.questionNum === STORE.questions.length - 1) {
     buttonText = 'Finish the quiz';
   }
 
-  let correctAnswerIndex = STORE[questionNum].correctAnswer;
-  let answer = STORE[questionNum].answers[correctAnswerIndex];
+  let correctAnswerIndex = STORE.questions[STORE.questionNum].correctAnswer;
+  let answer = STORE.questions[STORE.questionNum].answers[correctAnswerIndex];
   let output= `
   <section class='feedback'><p>You are wrong!</p>
   <p>The correct answer is <span class='answer-style'>${answer}</span><p></section>
@@ -122,9 +118,9 @@ function wrongAnswer() {
 function nextQuestion() {
   console.log('next question');
   $('.js-next-question').click(e => {
-    if (questionNum < STORE.length-1) {
+    if (STORE.questionNum < STORE.questions.length-1) {
       quizProgress();
-      generateQuestion(e, questionNum);
+      generateQuestion(e, STORE.questionNum);
     }
     else {
       displayFinal();
@@ -136,15 +132,15 @@ function nextQuestion() {
 
 function finalScore() {
   let finalScore = '';
-  if (score / STORE.length <= 0.2) {
+  if (STORE.score / STORE.questions.length <= 0.2) {
     finalScore = 'a dirty squib';
-  } else if (score / STORE.length <= 0.4){
+  } else if (STORE.score / STORE.questions.length <= 0.4){
     finalScore = 'a filthy mudblood';
-  } else if (score / STORE.length <= 0.6) {
+  } else if (STORE.score / STORE.questions.length <= 0.6) {
     finalScore = 'a muggle wizard';
-  } else if (score / STORE.length <= 0.8) {
+  } else if (STORE.score / STORE.questions.length <= 0.8) {
     finalScore = 'a student wizard';
-  } else if (score / STORE.length <= 1) {
+  } else if (STORE.score / STORE.questions.length <= 1) {
     finalScore = 'an auror';
   }
   return finalScore;
@@ -164,7 +160,7 @@ function displayFinal() {
 
   // show score
   $('.js-output').html(`
-  <section class='feedback'><p>Your final score is: ${score}</p>
+  <section class='feedback'><p>You got ${STORE.score} out of ${STORE.questions.length} correct!</p>
   <p>You are ${userScore}</p>
   </section>
   <button class='js-restart button'>Start over</button>
@@ -172,8 +168,13 @@ function displayFinal() {
 
   // on click 'restart quiz'
   $('.js-restart').on('click', function(){
-
-    location.reload();
+    $('.js-output').children().remove();
+    STORE.questionNum=0;
+    STORE.score=0;
+    $('.js-score').text(STORE.score);
+    $('.js-question-number').text(1);
+    $('.stats').show();
+    generateQuestion();
   })
 }
 

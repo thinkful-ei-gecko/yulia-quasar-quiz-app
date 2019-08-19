@@ -13,7 +13,7 @@ body {
 }
 
 .stats {
-    width: 200px;
+    width: 250px;
     background-color: rgb(26, 26, 26, 0.9);
     border: white solid 2px;
     border-radius: 5px;
@@ -29,10 +29,10 @@ body {
 h1 {
     font-size: 50px;
     text-align: center;
-    text-shadow: 4px 4px rgb(2,2,2);
+    text-shadow: 4px 4px 4px rgb(2,2,2);
 }
 
-h2 {
+legend {
     font-size: 30px;
     background-color: rgb(26, 26, 26, 0.9);
     border: white solid 2px;
@@ -90,7 +90,7 @@ label:active, label:focus-within {
     cursor: pointer;
 }
 
-.button:active, .button:focus {
+.button:active {
     background-color: rgb(240,240,240, 0.9);
     color: rgb(1,1,1);
     border: rgb(1,1,1) solid 2px;
@@ -100,7 +100,7 @@ label:active, label:focus-within {
 .alert-no-selection {
     color: red;
     font-size: 24px;
-    text-shadow: 2px 2px black;
+    text-shadow: 2px 2px 2px black;
 }
 
 /*feedback section*/
