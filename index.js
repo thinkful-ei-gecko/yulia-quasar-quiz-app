@@ -3,14 +3,12 @@
 // start quiz on page load
 // handle submit button to start quiz
 function startQuiz() {
-
   // hide stats on load
   $('.stats').hide();
-
   // click 'start quiz'
   $('.js-start-quiz').on('click', event => {
     $('.stats').show();
-    generateQuestion(event, STORE.questionNum);
+    generateQuestion(event);
     $('.js-question-number').text(`1 of ${STORE.questions.length}`);
   });
 }
@@ -27,13 +25,11 @@ function tallyScore() {
 
 // generate html for the questions and answers
 function generateQuestion(event) {
-
   // event.currentTarget is the submit button (start quiz) on home page
   const questionHTML = `
       <form id='js-form'>
-      
       <fieldset>
-      <legend>${STORE.questions[STORE.questionNum].question}</legend>
+        <legend>${STORE.questions[STORE.questionNum].question}</legend>
         <label for='answer1'>
             <input name='answerGroup' id='answer1' type="radio" value = "0">${STORE.questions[STORE.questionNum].answers[0]}</input>
         </label>
@@ -57,20 +53,15 @@ function generateQuestion(event) {
 // record user answer 
 function handleAnswerSubmission() {
   $('body').on('submit','#js-form', function(event) {
-
     event.preventDefault();
-    
     if (document.querySelectorAll('input[type="radio"]:checked').length === 0) {
       // alert("Please select an answer");
       if ($('.alert-no-selection').length === 0 ) {
         $('fieldset').append('<p class=\'alert-no-selection\'>Please select an answer</p>');
       }
-      
     }
     else {
-    
       const userAnswer = $('input:checked').val();
-
       if (userAnswer==STORE.questions[STORE.questionNum].correctAnswer) {
         tallyScore();
         correctAnswer();
@@ -78,16 +69,13 @@ function handleAnswerSubmission() {
         wrongAnswer();
       }
     }
-    
   });
 }
 
 // print 'you are right'
 // and add 'next question' button
 function correctAnswer() {
-
   let buttonText = 'Next question';
-
   if (STORE.questionNum === STORE.questions.length - 1) {
     buttonText = 'Finish the quiz';
   }
@@ -98,9 +86,9 @@ function correctAnswer() {
   nextQuestion();
 }
 
+//give user's feedback if answer is incorrect
 function wrongAnswer() {
   let buttonText = 'Next question';
-
   if (STORE.questionNum === STORE.questions.length - 1) {
     buttonText = 'Finish the quiz';
   }
@@ -115,21 +103,20 @@ function wrongAnswer() {
   nextQuestion();
 }
 
+//check if quiz not done
 function nextQuestion() {
-  console.log('next question');
   $('.js-next-question').click(e => {
     if (STORE.questionNum < STORE.questions.length-1) {
       quizProgress();
-      generateQuestion(e, STORE.questionNum);
+      generateQuestion(e);
     }
     else {
       displayFinal();
     }
   });
-
-
 }
 
+//display final score and rank
 function finalScore() {
   let finalScore = '';
   if (STORE.score / STORE.questions.length <= 0.2) {
@@ -151,13 +138,9 @@ function finalScore() {
 // how many questions right/wrong
 // start new quiz from here
 function displayFinal() {
-
   // hide stats
   $('.stats').hide();
-
   let userScore = finalScore();
-  console.log(userScore);
-
   // show score
   $('.js-output').html(`
   <section class='feedback'><p>You got ${STORE.score} out of ${STORE.questions.length} correct!</p>
@@ -175,11 +158,10 @@ function displayFinal() {
     $('.js-question-number').text(1);
     $('.stats').show();
     generateQuestion();
-  })
+  });
 }
 
 function main() {
-  console.log('loaded');
   startQuiz();
   handleAnswerSubmission();
 }
